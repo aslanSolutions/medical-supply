@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleRequest {
+public class RegisterArticleRequest {
     private String name;
     private int count;
     private String unit;

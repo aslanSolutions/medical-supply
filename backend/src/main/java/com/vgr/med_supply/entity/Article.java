@@ -1,14 +1,10 @@
 package com.vgr.med_supply.entity;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Entity
+@Data
 public class Article {
 
     @Id
