@@ -9,5 +9,4 @@ public class ArticleDto {
     private String name;
     private String unit;
     private int count;
-
 }
