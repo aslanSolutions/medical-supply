@@ -6,6 +6,7 @@ import com.vgr.med_supply.dto.UpdateArticleRequest;
 import com.vgr.med_supply.mapper.ArticleMapper;
 import com.vgr.med_supply.repository.ArticleRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<ArticleDto> createArticle(
-            @RequestBody RegisterArticleRequest request,
+            @RequestBody @Valid RegisterArticleRequest request,
             UriComponentsBuilder uriBuilder
             ) {
         System.out.println("request Param: " + request);
@@ -63,7 +64,7 @@ public class ArticleController {
     @PatchMapping("/{id}")
     public ResponseEntity<ArticleDto> updateArticleCount (
             @PathVariable(name="id") Long id,
-            @RequestBody UpdateArticleRequest request
+            @RequestBody @Valid UpdateArticleRequest request
     ) {
         var article = articleRepository.findById(id).orElse(null);
         if( article == null ) {

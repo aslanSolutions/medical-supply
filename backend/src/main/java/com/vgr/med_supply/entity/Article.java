@@ -15,5 +15,5 @@ public class Article {
 
     private String unit;
 
-    private int count;
+    private Integer count;
 }
