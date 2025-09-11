@@ -5,6 +5,7 @@ import com.vgr.med_supply.dto.RegisterArticleRequest;
 import com.vgr.med_supply.dto.UpdateArticleRequest;
 import com.vgr.med_supply.mapper.ArticleMapper;
 import com.vgr.med_supply.repository.ArticleRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/articles")
+@Tag(name = "Articles", description = "Endpoints for managing articles")
 public class ArticleController {
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
