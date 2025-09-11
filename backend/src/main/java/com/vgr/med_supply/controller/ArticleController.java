@@ -1,6 +1,6 @@
 package com.vgr.med_supply.controller;
 
-import com.vgr.med_supply.entity.Article;
+import com.vgr.med_supply.dto.ArticleDto;
 import com.vgr.med_supply.repository.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +14,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/articles")
 public class ArticleController {
-
     private final ArticleRepository articleRepository;
 
     @GetMapping
-    public List<Article> getAllArticle() {
-        return articleRepository.findAll();
+    public Iterable<ArticleDto> getAllArticle() {
+        return articleRepository.findAll()
+                .stream()
+                .map(article -> new ArticleDto(article.getId(), article.getName(),
+                        article.getUnit(), article.getCount()))
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Article> getArticleById(@PathVariable Long id){
+    public ResponseEntity<ArticleDto> getArticleById(@PathVariable Long id){
         var article =  articleRepository.findById(id).orElse(null);
         if (article == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(article);
+        return ResponseEntity.ok(new ArticleDto(article.getId(), article.getName(),
+                article.getUnit(), article.getCount()));
     }
 
 }
