@@ -20,4 +20,6 @@ public class RegisterArticleRequest {
 
     @NotBlank(message = "Unit is required")
     private String unit;
+
+    private String icon;
 }

@@ -16,4 +16,6 @@ public class Article {
     private String unit;
 
     private Integer count;
+
+    private String icon;
 }

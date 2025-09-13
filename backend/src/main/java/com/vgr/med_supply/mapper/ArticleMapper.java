@@ -17,6 +17,7 @@ public interface ArticleMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "unit", source = "unit")
     @Mapping(target = "count", source = "count")
+    @Mapping(target = "icon", source = "icon")
     Article toEntity(RegisterArticleRequest registerArticleRequest);
 
     void update(UpdateArticleRequest request, @MappingTarget Article article);

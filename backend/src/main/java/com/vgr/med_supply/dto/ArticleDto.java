@@ -8,4 +8,6 @@ public class ArticleDto {
     private String name;
     private Integer count;
     private String unit;
+    private String icon;
+
 }
