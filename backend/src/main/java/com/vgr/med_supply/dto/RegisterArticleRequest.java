@@ -22,4 +22,12 @@ public class RegisterArticleRequest {
     private String unit;
 
     private String icon;
+
+    private String description;
+
+    private String supplier;
+
+    private String price;
+
+    private String category;
 }
