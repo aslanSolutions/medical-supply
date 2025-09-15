@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "http://213.113.151.104/api/:path*" },
+    { "source": "/swagger/:path*", "destination": "http://213.113.151.104/swagger/:path*" },
+    { "source": "/v3/api-docs/:path*", "destination": "http://213.113.151.104/v3/api-docs/:path*" }
+  ]
+}
