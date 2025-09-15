@@ -13,8 +13,8 @@ This project is structured as a **monorepo**, containing both backend and fronte
 
 ---
 
-## Backend
 
+## Backend
 **Technology Stack:**
 - **Framework:** Spring Boot
 - **Java Version (JDK):** 24.0.2
@@ -26,6 +26,7 @@ This project is structured as a **monorepo**, containing both backend and fronte
 - Lightweight H2 database with web console
 - CRUD operations for inventory management
 - Statistics endpoints for usage tracking
+- OpenAPI definition available at http://localhost:8080/swagger-ui.html
 
 **Database Details:**
 - **Type:** H2 (lightweight, file-based)
@@ -45,8 +46,9 @@ mvn clean install
 # Run the backend using the mvn wrapper
 .\mvnw spring-boot:run
 ```
-## Backend
 
+
+## Frontend
 **Technology Stack**
 
 - **Framework:** React with TypeScript  
