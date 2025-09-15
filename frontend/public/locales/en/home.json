@@ -1,0 +1,19 @@
+{
+  "loading": "Loading…",
+  "faildToLoad": "Failed to load articles, try reloading the page.",
+  "searchPlaceholder": "Search by name or unit...",
+  "name": "Name",
+  "unit": "Unit",
+  "stock": "Stock",
+  "stockStatus": "Stock Status",
+  "actions": "Actions",
+  "use": "Use",
+  "noArticlesMatch": "No items match your search.",
+  "chooseAmount": "Choose the amount to deduct from stock.",
+  "notInStock": "Not enough in stock",
+  "cancel": "Cancel",
+  "sureDelete": "Are you sure you want to delete this item?",
+  "High": "High",
+  "Low" : "Low",
+  "Critical" : "Critical"
+}

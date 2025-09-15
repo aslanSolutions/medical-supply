@@ -1,0 +1,28 @@
+{
+  "title": "Lägg till ny artikel",
+  "description": "Fyll i detaljerna nedan för att lägga till en ny artikel i lagret.",
+  "fields": {
+    "name": "Artikelnamn",
+    "qty": "Antal i lager",
+    "unit": "Enhet",
+    "description": "Beskrivning (valfritt)",
+    "category": "Kategori (valfritt)",
+    "price": "Pris (valfritt)",
+    "icon": "Ikon (valfritt)",
+    "supplier": "Leverantör (valfritt)"
+  },
+  "placeholders": {
+    "name": "t.ex., Sterila gasbindor",
+    "qty": "t.ex., 100",
+    "unit": "t.ex., För sårvård",
+    "description": "t.ex., För sårvård",
+    "category": "t.ex., Medicinska förnödenheter",
+    "price": "t.ex., 5.99",
+    "selectIcon": "Välj en ikon",
+    "supplier": "t.ex., MediCorp AB"
+  },
+  "buttons": {
+    "cancel": "Avbryt",
+    "save": "Spara artikel"
+  }
+}

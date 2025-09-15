@@ -1,0 +1,31 @@
+{
+  "title": "Artikelinformation",
+  "description": "Visa och hantera produktinformation, lagerstatus och åtgärder.",
+  "notFound": "Produkten hittades inte.",
+  "noDescription": "Ingen beskrivning tillgänglig för denna produkt.",
+  "invalidPrice": "Ange ett giltigt icke-negativt pris.",
+  "saveFailed": "Misslyckades med att spara ändringar. Försök igen.",
+  "restockFailed": "Misslyckades med att fylla på lager. Försök igen.",
+  "confirmDelete": "Är du säker på att du vill ta bort denna produkt?",
+  "section": {
+    "description": "Beskrivning",
+    "productInfo": "Produktinformation",
+    "inventory": "Lagerhantering"
+  },
+  "fields": {
+    "name": "Produktnamn",
+    "id": "Produkt-ID",
+    "category": "Kategori",
+    "supplier": "Leverantör",
+    "price": "Enhetspris",
+    "qtyOnHand": "Antal i lager",
+    "units": "Enheter",
+    "adjustQty": "Justera antal"
+  },
+  "buttons": {
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "saving": "Sparar...",
+    "restock": "Fyll på lager"
+  }
+}

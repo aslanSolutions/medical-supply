@@ -5,6 +5,7 @@ import { computeStatus, getStatusClass } from "@/util/article-status-mapper";
 import { getArticlelIcon } from "@/util/icon-mapper";
 import Glyph from "@/components/common/glyph";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface ArticleListProps {
   articles: Article[];
@@ -25,6 +26,7 @@ export default function ArticleList({
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [warning, setWarning] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation("home");
 
   const openUseModal = (article: Article) => {
     setSelectedArticle(article);
@@ -35,11 +37,13 @@ export default function ArticleList({
   const closeUseModal = () => {
     setIsModalOpen(false);
     setSelectedArticle(null);
+    setWarning("")
   };
 
   const confirmUse = () => {
     if (!selectedArticle) return;
     onUse?.(selectedArticle, amount);
+    setWarning("")
     closeUseModal();
   };
 
@@ -126,7 +130,7 @@ export default function ArticleList({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by name or unit..."
+            placeholder={t("searchPlaceholder")}
             className="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -150,14 +154,14 @@ export default function ArticleList({
                 </div>
 
                 <span
-                  className={`gap-1 justify-center inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${getStatusClass(
-                    status
-                  )}`}
+                  className={`gap-1 justify-center inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 
+                    ${getStatusClass(status)}
+                    `}
                 >
                   {status === "Critical" && (
                     <img src={alarm} alt="" width={14} height={14} />
                   )}
-                  {status}
+                  {t(status)}
                 </span>
               </header>
 
@@ -165,7 +169,7 @@ export default function ArticleList({
               <section className="mt-3 grid grid-cols-2 gap-3">
                 <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-center">
                   <div className="text-[10px] uppercase tracking-wide text-gray-500">
-                    Stock
+                    {t("stock")}
                   </div>
                   <div className="mt-0.5 text-base font-semibold text-gray-900">
                     {p.count}
@@ -174,7 +178,7 @@ export default function ArticleList({
 
                 <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-center">
                   <div className="text-[10px] uppercase tracking-wide text-gray-500">
-                    Unit
+                    {t("unit")}
                   </div>
                   <div className="mt-0.5 text-base font-semibold text-gray-900">
                     {p.unit}
@@ -187,17 +191,13 @@ export default function ArticleList({
                   className="flex-1 rounded-lg px-3 py-2 text-sm font-medium text-white bg-[#13a4ec] hover:bg-[#1e6d94] active:bg-blue-800"
                   onClick={() => openUseModal(p)}
                 >
-                  Use
+                  {t("use")}
                 </button>
 
                 <button
                   className="flex-1 rounded-lg border border-red-200 bg-white px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 active:bg-red-100"
                   onClick={() => {
-                    if (
-                      window.confirm(
-                        "Are you sure you want to delete this item?"
-                      )
-                    ) {
+                    if (window.confirm(t("sureDelete"))) {
                       onDelete?.(p);
                     }
                   }}
@@ -222,11 +222,11 @@ export default function ArticleList({
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs font-medium uppercase text-gray-500">
               <tr>
-                <SortableTh col="name">Name</SortableTh>
-                <SortableTh col="count">Stock</SortableTh>
-                <SortableTh col="unit">Unit</SortableTh>
-                <th className="px-6 py-3 text-center">Stock status</th>
-                <th className="px-6 py-3 text-center">Actions</th>
+                <SortableTh col="name">{t("name")}</SortableTh>
+                <SortableTh col="count">{t("stock")}</SortableTh>
+                <SortableTh col="unit">{t("unit")}</SortableTh>
+                <th className="px-6 py-3 text-center">{t("stockStatus")}</th>
+                <th className="px-6 py-3 text-center">{t("actions")}</th>
               </tr>
             </thead>
 
@@ -273,7 +273,7 @@ export default function ArticleList({
                           className="cursor-pointer flex items-center justify-center rounded-md h-8 w-8 bg-[#13a4ec] hover:bg-[#1e6d94] text-white  transition-colors"
                           onClick={() => openUseModal(p)}
                         >
-                          Use
+                          {t("use")}
                         </button>
                         <button
                           className="cursor-pointer flex items-center justify-center rounded-md h-8 w-8 bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -285,11 +285,7 @@ export default function ArticleList({
                         <button
                           className=" cursor-pointer flex items-center justify-center rounded-md h-8 w-8 bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
                           onClick={() => {
-                            if (
-                              window.confirm(
-                                "Are you sure you want to delete this item?"
-                              )
-                            ) {
+                            if (window.confirm(t("sureDelete"))) {
                               onDelete?.(p);
                             }
                           }}
@@ -307,7 +303,7 @@ export default function ArticleList({
 
         {filtered.length === 0 && (
           <div className="p-10 text-center text-gray-500">
-            No items match your search.
+            {t("noArticlesMatch")}
           </div>
         )}
       </div>
@@ -328,11 +324,9 @@ export default function ArticleList({
             >
               <header className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Use {selectedArticle?.name}
+                  {t("use")} {selectedArticle?.name}
                 </h3>
-                <p className="text-sm text-gray-500">
-                  Choose the amount to deduct from stock.
-                </p>
+                <p className="text-sm text-gray-500">{t("chooseAmount")}</p>
               </header>
               <div className="flex items-center justify-center gap-2 mb-4">
                 <button
@@ -353,7 +347,7 @@ export default function ArticleList({
                     const value = parseInt(e.target.value) || 1;
                     if (selectedArticle && value > selectedArticle.count) {
                       setAmount(selectedArticle.count);
-                      setWarning("Not enough in stock");
+                      setWarning(t("notInStock"));
                     } else {
                       setAmount(Math.max(1, value));
                       setWarning("");
@@ -366,7 +360,7 @@ export default function ArticleList({
                   className="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-200 transition-colors text-xl font-bold leading-[1] cursor-pointer"
                   onClick={() => {
                     if (selectedArticle && amount >= selectedArticle.count) {
-                      setWarning("Not enough in stock");
+                      setWarning(t("notInStock"));
                       setAmount(selectedArticle.count);
                     } else {
                       setAmount((a) => a + 1);
@@ -385,7 +379,7 @@ export default function ArticleList({
                   className="cursor-pointer px-4 h-9 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
                   onClick={closeUseModal}
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
 
                 <button
@@ -399,9 +393,9 @@ export default function ArticleList({
                   }
                 >
                   <i className="fi fi-rr-checkbox"></i>
-                  Use
+                  {t("use")}
                 </button>
-              </div>{" "}
+              </div>
             </div>
           </div>
         </>
