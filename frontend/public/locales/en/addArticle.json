@@ -1,0 +1,28 @@
+{
+  "title": "Add New Article",
+  "description": "Fill in the details below to add a new article to the inventory.",
+  "fields": {
+    "name": "Article Name",
+    "qty": "Quantity in Stock",
+    "unit": "Unit",
+    "description": "Description (optional)",
+    "category": "Category (optional)",
+    "price": "Price (optional)",
+    "icon": "Icon (optional)",
+    "supplier": "Supplier (optional)"
+  },
+  "placeholders": {
+    "name": "e.g., Sterile Gauze Pads",
+    "qty": "e.g., 100",
+    "unit": "e.g., For wound cleaning",
+    "description": "e.g., For wound cleaning",
+    "category": "e.g., Medical Supplies",
+    "price": "e.g., 5.99",
+    "selectIcon": "Select an icon",
+    "supplier": "e.g., MediCorp Inc."
+  },
+  "buttons": {
+    "cancel": "Cancel",
+    "save": "Save Article"
+  }
+}

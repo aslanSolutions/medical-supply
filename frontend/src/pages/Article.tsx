@@ -8,7 +8,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
 import type { TransformedUsage } from "@/types/articleUsage";
 import { transformUsageData } from "@/util/article-usage-transformer";
+import { useTranslation } from "react-i18next";
+
 export default function ArticleDetails() {
+  const { t } = useTranslation("article");
   const { getArticle, patch, remove, getArticleStatistic } = useArticles();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -47,7 +50,7 @@ export default function ArticleDetails() {
   if (!product) {
     return (
       <main className="p-8">
-        <p className="text-gray-600">Product not found.</p>
+        <p className="text-gray-600">{t("notFound")}</p>
       </main>
     );
   }
@@ -57,7 +60,7 @@ export default function ArticleDetails() {
     const priceNum =
       editForm.price.trim() === "" ? null : Number(editForm.price);
     if (priceNum !== null && (Number.isNaN(priceNum) || priceNum < 0)) {
-      alert("Please enter a valid non-negative price.");
+      alert(t("invalidPrice"));
       return;
     }
 
@@ -79,7 +82,7 @@ export default function ArticleDetails() {
     } catch (e) {
       console.error("Save failed", e);
       setProduct(prev);
-      alert("Failed to save changes. Please try again.");
+      alert(t("saveFailed"));
     } finally {
       setEditSaving(false);
     }
@@ -99,7 +102,7 @@ export default function ArticleDetails() {
     } catch (err) {
       console.error("Failed to restock:", err);
       setProduct(prev);
-      alert("Failed to restock. Please try again.");
+      alert(t("restockFailed"));
     } finally {
       setSaving(false);
       setAmount(1);
@@ -107,7 +110,7 @@ export default function ArticleDetails() {
   };
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
+    if (window.confirm(t("confirmDelete"))) {
       remove(product.id);
       navigate("/");
     }
@@ -116,24 +119,22 @@ export default function ArticleDetails() {
   return (
     <main className="max-w-5xl mx-auto p-8 flex flex-col gap-8">
       <header className="mb-12 flex flex-col items-start">
-        <h1 className="text-4xl font-bold mb-3">Article Details</h1>
-        <p className="text-gray-500">
-          View and manage product information, stock levels, and actions.
-        </p>
+        <h1 className="text-4xl font-bold mb-3">{t("title")}</h1>
+        <p className="text-gray-500">{t("description")}</p>
       </header>
 
       <section className=" text-left">
-        <h2 className="font-bold mb-4 text-[22px]"> Description</h2>
-        <p>
-          {product.description ?? "No available description for this product."}
-        </p>
+        <h2 className="font-bold mb-4 text-[22px]">
+          {t("section.description")}
+        </h2>
+        <p>{product.description ?? t("noDescription")}</p>
       </section>
 
       <div className="grid md:grid-cols-2 gap-6">
         <section className="border border-gray-100 rounded-lg p-6  bg-white shadow">
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-[22px] text-left">
-              Product Information
+              {t("section.productInfo")}
             </h2>
             <i
               onClick={() => setEditMode(true)}
@@ -146,18 +147,18 @@ export default function ArticleDetails() {
           <div className="flex md:justify-start md:gap-25 text-left">
             <div className="space-y-4">
               <div className="flex flex-col">
-                <span className="text-gray-500">Product Name</span>
+                <span className="text-gray-500">{t("fields.name")}</span>
                 <span>{product.name}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-gray-500">Product ID</span>
+                <span className="text-gray-500">{t("fields.id")}</span>
                 <span>{product.id}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-gray-500">Category</span>
+                <span className="text-gray-500">{t("fields.category")}</span>
                 {editMode ? (
                   <TextField
-                    id="outlined-basic"
+                    id="outlined-category"
                     variant="standard"
                     value={editForm.category}
                     onChange={(e) =>
@@ -183,10 +184,10 @@ export default function ArticleDetails() {
 
             <div className="space-y-4">
               <div className="flex flex-col">
-                <span className="text-gray-500">Supplier</span>
+                <span className="text-gray-500">{t("fields.supplier")}</span>
                 {editMode ? (
                   <TextField
-                    id="outlined-basic"
+                    id="outlined-supplier"
                     variant="standard"
                     value={editForm.supplier}
                     onChange={(e) =>
@@ -209,10 +210,10 @@ export default function ArticleDetails() {
                 )}
               </div>
               <div className="flex flex-col">
-                <span className="text-gray-500">Unit Price</span>
+                <span className="text-gray-500">{t("fields.price")}</span>
                 {editMode ? (
                   <TextField
-                    id="outlined-basic"
+                    id="outlined-price"
                     variant="standard"
                     value={editForm.price}
                     onChange={(e) =>
@@ -246,7 +247,7 @@ export default function ArticleDetails() {
                     variant="contained"
                     disabled={editSaving}
                   >
-                    {editSaving ? "Saving..." : "Save"}
+                    {editSaving ? t("buttons.saving") : t("buttons.save")}
                   </Button>
                   <Button
                     onClick={() => {
@@ -262,7 +263,7 @@ export default function ArticleDetails() {
                     color="error"
                     disabled={editSaving}
                   >
-                    Cancel
+                    {t("buttons.cancel")}
                   </Button>
                 </div>
               )}
@@ -272,19 +273,21 @@ export default function ArticleDetails() {
 
         <section className="border border-gray-100 rounded-lg p-6  bg-white shadow">
           <h2 className="font-bold mb-4 text-[22px] text-left">
-            Inventory Management
+            {t("section.inventory")}
           </h2>
           <hr className="my-4 border-gray-200 " />
           <div className="mb-4 text-left">
-            <p className="text-gray-500">Quantity on Hand</p>
+            <p className="text-gray-500">{t("fields.qtyOnHand")}</p>
             <p className="text-2xl font-bold">
               {product.count}{" "}
-              <span className="text-gray-500 text-base">Units</span>
+              <span className="text-gray-500 text-base">
+                {t("fields.units")}
+              </span>
             </p>
           </div>
 
           <div className="mb-4 text-left">
-            <p className="text-gray-500 mb-1">Adjust Quantity</p>
+            <p className="text-gray-500 mb-1">{t("fields.adjustQty")}</p>
             <div className="flex items-center gap-2 rounded w-50">
               <button
                 className="flex items-center justify-center rounded-md h-10 w-12 bg-gray-100 text-[var(--text-secondary)] hover:bg-gray-200 transition-colors text-2xl font-bold cursor-pointer"
@@ -320,7 +323,7 @@ export default function ArticleDetails() {
               className="flex justify-center items-center gap-2 flex-1 bg-[#13a4ec] hover:bg-[#1e6d94] cursor-pointer text-white font-medium py-2 rounded"
               onClick={handleRestock}
             >
-              Restock Product
+              {t("buttons.restock")}
             </button>
 
             <button

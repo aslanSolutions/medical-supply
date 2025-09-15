@@ -1,0 +1,19 @@
+{
+  "loading": "Laddar…",
+  "faildToLoad": "Kunde inte ladda artiklar, försök att ladda om sidan.",
+  "searchPlaceholder": "Sök efter namn eller enhet...",
+  "name": "Namn",
+  "unit": "Enhet",
+  "stock": "Lager",
+  "stockStatus": "Lagerstatus",
+  "actions": "Åtgärder",
+  "use": "Använd",
+  "noArticlesMatch": "Inga artiklar matchar din sökning.",
+  "chooseAmount": "Välj mängden att dra av från lagret.",
+  "notInStock": "Inte tillräckligt i lager",
+  "cancel": "Avbryt",
+  "sureDelete": "Är du säker på att du vill ta bort denna artikel?",
+  "High": "Hög",
+  "Low": "Låg",
+  "Critical": "Kritisk"
+}

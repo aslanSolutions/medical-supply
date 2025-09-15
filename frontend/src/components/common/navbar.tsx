@@ -1,13 +1,23 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "@/assets/vgrBig.png";
+import { useTranslation } from "react-i18next";
+import ukFlag from "@/assets/flags/uk.png";
+import svFlag from "@/assets/flags/sv.png";
 
 export default function Navbar() {
+  const { t, i18n } = useTranslation("navbar");
   const [open, setOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
 
   const linkBase = "px-3 py-2 rounded-md text-sm font-medium transition-colors";
   const linkActive = "bg-[#13a4ec] text-white";
   const linkIdle = "text-gray-700 hover:text-gray-900 hover:bg-gray-100";
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    setLangOpen(false);
+  };
 
   return (
     <header className="bg-gray-50">
@@ -29,7 +39,7 @@ export default function Navbar() {
                 `${linkBase} ${isActive ? linkActive : linkIdle}`
               }
             >
-              Dashboard
+              {t("dashboard")}
             </NavLink>
             <NavLink
               to="/articles"
@@ -37,8 +47,43 @@ export default function Navbar() {
                 `${linkBase} ${isActive ? linkActive : linkIdle}`
               }
             >
-              Add article
+              {t("articles")}
             </NavLink>
+
+            <div className="relative ml-4">
+              <button
+                className="flex items-center gap-1 border border-gray-200 rounded-md px-2 py-1 hover:bg-gray-100"
+                onClick={() => setLangOpen((o) => !o)}
+              >
+                <img
+                  src={i18n.language === "sv" ? svFlag : ukFlag}
+                  alt="flag"
+                  className="w-5 h-5 object-contain"
+                />
+                <span className="text-sm font-medium">
+                  {i18n.language.toUpperCase()}
+                </span>
+                <i className="fi fi-br-angle-small-down ml-1"></i>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 mt-1 w-24 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                  <button
+                    onClick={() => changeLanguage("en")}
+                    className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 w-full"
+                  >
+                    <img src={ukFlag} alt="US" className="w-5 h-5" />
+                    EN
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("sv")}
+                    className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 w-full"
+                  >
+                    <img src={svFlag} alt="SV" className="w-5 h-5" />
+                    SV
+                  </button>
+                </div>
+              )}
+            </div>
           </nav>
 
           <button
@@ -66,7 +111,7 @@ export default function Navbar() {
                 }
                 onClick={() => setOpen(false)}
               >
-                Dashboard
+                {t("dashboard")}
               </NavLink>
               <NavLink
                 to="/articles"
@@ -75,27 +120,43 @@ export default function Navbar() {
                 }
                 onClick={() => setOpen(false)}
               >
-                Articles
-              </NavLink>
-              <NavLink
-                to="/suppliers"
-                className={({ isActive }) =>
-                  `w-full ${linkBase} ${isActive ? linkActive : linkIdle}`
-                }
-                onClick={() => setOpen(false)}
-              >
-                Suppliers
-              </NavLink>
-              <NavLink
-                to="/orders"
-                className={({ isActive }) =>
-                  `w-full ${linkBase} ${isActive ? linkActive : linkIdle}`
-                }
-                onClick={() => setOpen(false)}
-              >
-                Orders
+                {t("articles")}
               </NavLink>
             </nav>
+            <div className="relative ml-4">
+              <button
+                className="flex items-center gap-1 border border-gray-200 rounded-md px-2 py-1 hover:bg-gray-100"
+                onClick={() => setLangOpen((o) => !o)}
+              >
+                <img
+                  src={i18n.language === "sv" ? svFlag : ukFlag}
+                  alt="flag"
+                  className="w-5 h-5 object-contain"
+                />
+                <span className="text-sm font-medium">
+                  {i18n.language.toUpperCase()}
+                </span>
+                <i className="fi fi-br-angle-small-down ml-1"></i>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 mt-1 w-24 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                  <button
+                    onClick={() => changeLanguage("en")}
+                    className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 w-full"
+                  >
+                    <img src={ukFlag} alt="US" className="w-5 h-5" />
+                    EN
+                  </button>
+                  <button
+                    onClick={() => changeLanguage("sv")}
+                    className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 w-full"
+                  >
+                    <img src={svFlag} alt="SV" className="w-5 h-5" />
+                    SV
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

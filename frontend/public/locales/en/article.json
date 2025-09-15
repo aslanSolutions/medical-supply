@@ -1,0 +1,31 @@
+{
+  "title": "Article Details",
+  "description": "View and manage product information, stock levels, and actions.",
+  "notFound": "Product not found.",
+  "noDescription": "No available description for this product.",
+  "invalidPrice": "Please enter a valid non-negative price.",
+  "saveFailed": "Failed to save changes. Please try again.",
+  "restockFailed": "Failed to restock. Please try again.",
+  "confirmDelete": "Are you sure you want to delete this product?",
+  "section": {
+    "description": "Description",
+    "productInfo": "Product Information",
+    "inventory": "Inventory Management"
+  },
+  "fields": {
+    "name": "Product Name",
+    "id": "Product ID",
+    "category": "Category",
+    "supplier": "Supplier",
+    "price": "Unit Price",
+    "qtyOnHand": "Quantity on Hand",
+    "units": "Units",
+    "adjustQty": "Adjust Quantity"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "restock": "Restock Product"
+  }
+}
