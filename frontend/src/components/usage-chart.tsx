@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import type { TransformedUsage } from "@/types/articleUsage";
 import {
   Bar,
   BarChart,
@@ -15,27 +16,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { calculateWeekChange } from "@/util/article-usage-calc";
 
-interface ArticleUsageData {
-  name: string;
-  v1: number;
-  v2: number;
-}
+export function ArticleUsage({ data }: { data: TransformedUsage[] | null }) {
+  if (!data) return "No data available for this article.";
 
-export function ArticleUsage({ data }: { data: ArticleUsageData[] }) {
-  const chartHeight = 300;
+  const weekChange = calculateWeekChange(data);
+  const isIncrease = weekChange >= 0;
 
   const bars = [
-    {
-      name: "This year",
-      dataKey: "v1",
-      color: "#13a4ec",
-    },
-    {
-      name: "Last year",
-      dataKey: "v2",
-      color: "#1e6d94",
-    },
+    { name: "This week", dataKey: "v1", color: "#13a4ec" },
+    { name: "Last week", dataKey: "v2", color: "#1e6d94" },
   ];
 
   return (
@@ -44,78 +35,68 @@ export function ArticleUsage({ data }: { data: ArticleUsageData[] }) {
         border: "1px solid",
         borderColor: "grey.100",
         borderRadius: 2,
-        p: 6,
+        p: { xs: 2, sm: 6 },
         bgcolor: "white",
         boxShadow: 1,
       }}
     >
-      <CardHeader title={"Product usage"} />
+      <CardHeader
+        title={<h2 className="font-bold mb-4 text-[22px]">Product usage</h2>}
+      />
       <CardContent>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={{ xs: 3, sm: 4 }}
+          alignItems={{ xs: "stretch", sm: "flex-start" }}
+        >
+          {/* Stats */}
           <Stack
-            spacing={3}
+            spacing={2}
             sx={{
-              flex: "0 0 auto",
+              flex: { xs: "1 1 auto", sm: "0 0 240px" },
               justifyContent: "space-between",
-              width: "240px",
+              mb: { xs: 3, sm: 0 },
             }}
           >
-            <Stack spacing={2}>
-              <Typography color="primary" variant="h2">
-                15%
-              </Typography>
-              <Typography>
-                increase in this product usage with{" "}
-                <Typography color="primary" fontWeight={700} component="span">
-                  15%
-                </Typography>{" "}
-                than last month.
-              </Typography>
-            </Stack>
+            <Typography
+              color={isIncrease ? "success.main" : "error.main"}
+              variant="h3"
+            >
+              {weekChange}%
+            </Typography>
+            <Typography variant="body2">
+              <Typography
+                component="span"
+                color={isIncrease ? "success.main" : "error.main"}
+                fontWeight={700}
+              >
+                {weekChange}%
+              </Typography>{" "}
+              {isIncrease ? "increase" : "decrease"} in this product usage
+              compared to last week.
+            </Typography>
           </Stack>
+
+          {/* Chart */}
           <Stack divider={<Divider />} spacing={2} sx={{ flex: "1 1 auto" }}>
-            <ResponsiveContainer height={chartHeight}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart
-                barGap={-32}
                 data={data}
+                barGap={-24}
                 margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
               >
                 <CartesianGrid strokeDasharray="2 4" vertical={false} />
-                <XAxis
-                  axisLine={false}
-                  dataKey="name"
-                  tickLine={false}
-                  type="category"
-                  xAxisId={0}
-                />
-                <XAxis
-                  axisLine={false}
-                  dataKey="name"
-                  hide
-                  type="category"
-                  xAxisId={1}
-                />
-                <YAxis
-                  axisLine={false}
-                  domain={[0, 50]}
-                  hide
-                  tickCount={6}
-                  type="number"
-                />
-                {bars.map((bar, index) => (
+                <XAxis axisLine={false} dataKey="name" tickLine={false} />
+                <YAxis axisLine={false} hide type="number" />
+                {bars.map((bar) => (
                   <Bar
-                    animationDuration={300}
-                    barSize={32}
+                    key={bar.name}
                     dataKey={bar.dataKey}
                     fill={bar.color}
-                    key={bar.name}
-                    name={bar.name}
                     radius={[5, 5, 5, 5]}
-                    xAxisId={index}
                   />
                 ))}
                 <Tooltip
-                  animationDuration={50}
                   content={(props) => <TooltipContent {...props} />}
                   cursor={false}
                 />
@@ -131,24 +112,16 @@ export function ArticleUsage({ data }: { data: ArticleUsageData[] }) {
 
 function Legend() {
   const bars = [
-    {
-      name: "This year",
-      dataKey: "v1",
-      color: "#7578ff",
-    },
-    {
-      name: "Last year",
-      dataKey: "v2",
-      color: "#3725ae",
-    },
+    { name: "This week", color: "#13a4ec" },
+    { name: "Last week", color: "#1e6d94" },
   ];
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={2} flexWrap="wrap">
       {bars.map((bar) => (
         <Stack
-          direction="row"
           key={bar.name}
+          direction="row"
           spacing={1}
           sx={{ alignItems: "center" }}
         >
@@ -180,45 +153,31 @@ function TooltipContent({
   payload,
 }: {
   active: boolean;
-  payload: TooltipEntry[];
+  payload?: TooltipEntry[];
 }) {
-  if (!active) {
-    return null;
-  }
+  if (!active || !payload) return null;
 
   return (
-    <Paper
-      sx={{
-        border: "1px solid gray",
-        boxShadow: 2,
-        p: 1,
-      }}
-    >
-      <Stack spacing={2}>
-        {payload?.map((entry: TooltipEntry) => (
+    <Paper sx={{ border: "1px solid gray", boxShadow: 2, p: 1 }}>
+      <Stack spacing={1}>
+        {payload.map((entry) => (
           <Stack
-            direction="row"
             key={entry.name}
-            spacing={3}
+            direction="row"
+            spacing={2}
             sx={{ alignItems: "center" }}
           >
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ alignItems: "center", flex: "1 1 auto" }}
-            >
-              <Box
-                sx={{
-                  bgcolor: entry.fill,
-                  borderRadius: "2px",
-                  height: "8px",
-                  width: "8px",
-                }}
-              />
-              <Typography sx={{ whiteSpace: "nowrap" }}>
-                {entry.name}
-              </Typography>
-            </Stack>
+            <Box
+              sx={{
+                bgcolor: entry.fill,
+                borderRadius: "2px",
+                height: "8px",
+                width: "8px",
+              }}
+            />
+            <Typography sx={{ whiteSpace: "nowrap", flex: 1 }}>
+              {entry.name}
+            </Typography>
             <Typography color="text.secondary" variant="body2">
               {new Intl.NumberFormat("en-US").format(entry.value)}
             </Typography>

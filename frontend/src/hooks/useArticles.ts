@@ -6,7 +6,9 @@ import {
   deleteArticle,
   getArticleById,
 } from "@/api/articles";
+import { getArticleUsage } from "@/api/articleUsage";
 import type { Article } from "@/types/article";
+import type { ArticleUsage } from "@/types/articleUsage";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -48,9 +50,7 @@ export function useArticles() {
   };
 
   const getArticle = async (id: Article["id"]): Promise<Article | null> => {
-    console.log("get article id:", id);
     const res = await getArticleById(id);
-    console.log("list cash:", res);
     return res ?? null;
   };
 
@@ -89,6 +89,13 @@ export function useArticles() {
     }
   };
 
+  const getArticleStatistic = async (
+    id: Article["id"]
+  ): Promise<ArticleUsage[] | null> => {
+    const res = await getArticleUsage(id);
+    return res ?? null;
+  };
+
   return {
     articles: data ?? [],
     status,
@@ -97,5 +104,6 @@ export function useArticles() {
     patch,
     remove,
     getArticle,
+    getArticleStatistic,
   };
 }

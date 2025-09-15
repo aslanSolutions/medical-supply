@@ -6,9 +6,10 @@ import { useArticles } from "@/hooks/useArticles";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Button } from "@mui/material";
-
+import type { TransformedUsage } from "@/types/articleUsage";
+import { transformUsageData } from "@/util/article-usage-transformer";
 export default function ArticleDetails() {
-  const { getArticle, patch, remove } = useArticles();
+  const { getArticle, patch, remove, getArticleStatistic } = useArticles();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Article | null>(null);
@@ -21,39 +22,26 @@ export default function ArticleDetails() {
     price: "",
     category: "",
   });
+  const [articleUsage, setArticleUsage] = useState<TransformedUsage[] | null>(
+    []
+  );
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProductData = async () => {
       if (!id) return;
-      //console.log("fetching product with id:", id);
-      const found = await getArticle(id);
-      //console.log("fetched finished: ", found);
 
+      const usage = await getArticleStatistic(id);
+      setArticleUsage(transformUsageData(usage || []));
+
+      const found = await getArticle(id);
       setProduct(found || null);
     };
-    fetchProduct();
+    fetchProductData();
   }, [id]);
 
   const usageChart = useMemo(
-    () => (
-      <ArticleUsage
-        data={[
-          { name: "Jan", v1: 36, v2: 19 },
-          { name: "Feb", v1: 45, v2: 23 },
-          { name: "Mar", v1: 26, v2: 12 },
-          { name: "Apr", v1: 39, v2: 20 },
-          { name: "May", v1: 26, v2: 12 },
-          { name: "Jun", v1: 42, v2: 31 },
-          { name: "Jul", v1: 38, v2: 19 },
-          { name: "Aug", v1: 39, v2: 20 },
-          { name: "Sep", v1: 37, v2: 18 },
-          { name: "Oct", v1: 41, v2: 22 },
-          { name: "Nov", v1: 45, v2: 24 },
-          { name: "Dec", v1: 23, v2: 17 },
-        ]}
-      />
-    ),
-    []
+    () => <ArticleUsage data={articleUsage} />,
+    [articleUsage]
   );
 
   if (!product) {
