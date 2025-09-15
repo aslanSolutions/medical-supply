@@ -15,4 +15,4 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: /
+    path: /swagger-ui.html
