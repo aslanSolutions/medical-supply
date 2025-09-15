@@ -47,6 +47,8 @@ mvn clean install
 .\mvnw spring-boot:run
 ```
 
+---
+
 
 ## Frontend
 **Technology Stack**
@@ -55,8 +57,6 @@ mvn clean install
 - **Build Tool:** Vite  
 - **React Version:** 19.1.1
 - **Node Version:** 22.19.0
-
----
 
 **Features**
 
