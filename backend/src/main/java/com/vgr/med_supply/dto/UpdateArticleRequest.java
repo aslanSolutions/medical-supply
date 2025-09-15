@@ -8,7 +8,11 @@ import lombok.Data;
 public class UpdateArticleRequest {
     // Only patch the count according to the specification
     // More fields could be added for update in the future
-    @NotNull(message = "Count is required")
     @Min(value = 0, message = "Count must be 0 or greater")
     private Integer count;
+    private String icon;
+    private String description;
+    private String supplier;
+    private String price;
+    private String category;
 }

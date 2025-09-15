@@ -3,9 +3,10 @@ package com.vgr.med_supply.controller;
 import com.vgr.med_supply.dto.ArticleDto;
 import com.vgr.med_supply.dto.RegisterArticleRequest;
 import com.vgr.med_supply.dto.UpdateArticleRequest;
+import com.vgr.med_supply.entity.ArticleUsage;
 import com.vgr.med_supply.mapper.ArticleMapper;
 import com.vgr.med_supply.repository.ArticleRepository;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.vgr.med_supply.repository.ArticleUsageRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -18,9 +19,9 @@ import java.util.Set;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/articles")
-@Tag(name = "Articles", description = "Endpoints for managing articles")
 public class ArticleController {
     private final ArticleRepository articleRepository;
+    private final ArticleUsageRepository articleUsageRepository;
     private final ArticleMapper articleMapper;
 
     @GetMapping
@@ -70,7 +71,30 @@ public class ArticleController {
         if( article == null ) {
             return ResponseEntity.notFound().build();
         }
+        int oldCount = article.getCount() == null ? 0 : article.getCount();
         articleMapper.update(request, article);
+        if (request.getCount() == null) {
+            articleRepository.save(article);
+            return ResponseEntity.ok(articleMapper.toDto(articleRepository.save(article)));
+        }
+        int newCount = Math.max(0, article.getCount() == null ? 0 : article.getCount());
+        article.setCount(newCount);
+
+        int used = Math.max(0, oldCount - newCount);
+
+        // Save article first, then usage row if decreased
+        articleRepository.save(article);
+
+        if (used > 0) {
+            var today = java.time.LocalDate.now(java.time.ZoneId.of("Europe/Stockholm"));
+            var usage = ArticleUsage.builder()
+                    .article(article)
+                    .usageDate(today)
+                    .used(used)
+                    .build();
+            articleUsageRepository.save(usage);
+        }
+
         return  ResponseEntity.ok(articleMapper.toDto(articleRepository.save(article)));
     }
 

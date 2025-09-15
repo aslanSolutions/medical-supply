@@ -8,7 +8,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+        componentModel = "spring",
+        nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.IGNORE
+)
 public interface ArticleMapper {
     ArticleDto toDto(Article article);
 
@@ -17,6 +20,10 @@ public interface ArticleMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "unit", source = "unit")
     @Mapping(target = "count", source = "count")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "supplier", source = "supplier")
+    @Mapping(target = "price", source = "price")
+    @Mapping(target = "category", source = "category")
     Article toEntity(RegisterArticleRequest registerArticleRequest);
 
     void update(UpdateArticleRequest request, @MappingTarget Article article);

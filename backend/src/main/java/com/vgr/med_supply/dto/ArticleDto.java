@@ -8,4 +8,9 @@ public class ArticleDto {
     private String name;
     private Integer count;
     private String unit;
+    private String icon;
+    private String description;
+    private String supplier;
+    private String price;
+    private String category;
 }
